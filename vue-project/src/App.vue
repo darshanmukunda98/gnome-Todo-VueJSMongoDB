@@ -1,12 +1,9 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import {ref} from 'vue'
+import ChildComp from './ChildComp.vue'
 
-const p = ref(null);
-
-onMounted(() =>{
-  p.value.textContent = 'mounted!'
-})
+const msg = ref('from parent')
 </script>
 <template>
-  <p ref="p">hello</p>
+<ChildComp>Message: {{ msg }}</ChildComp>
 </template>
