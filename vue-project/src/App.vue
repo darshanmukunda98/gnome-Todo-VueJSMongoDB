@@ -1,18 +1,54 @@
 <script setup>
-import {ref} from 'vue'
+import { ref } from "vue";
 
-const show = ref(true)
-const list = ref([1,2,3])
+const text = ref("Edit me");
+const checked = ref(true);
+const checkedNames = ref([]);
+const picked = ref("One");
+const selected = ref("A");
+const multiSelected = ref(["A"]);
 </script>
 <template>
-  <button @click="show = !show">Toggle List</button>
-  <button @click="list.push(list.length + 1)">Push Number</button>
-  <button @click="list.pop()">Pop Number</button>
-  <button @click="list.reverse()">Reverse List</button>
+  <h2>Text Input</h2>
+  <input v-model="text" />{{ text }}
 
-  <ul v-if="show && list.length">
-    <li v-for="item of list">{{ item }}</li>
-  </ul>
-  <p v-else-if="list.length">List is not empty, but hidden </p>
-  <p v-else>List is empty</p>
+  <h2>Checkbox</h2>
+  <input type="checkbox" id="checkbox" v-model="checked" />
+  <label for="checkbox">Checked: {{ checked }}</label>
+
+  <h2>Multi Checkbox</h2>
+  <input type="checkbox" id="jack" value="Jack" v-model="checkedNames" />
+  <label for="jack">Jack</label>
+  <input type="checkbox" id="john" value="John" v-model="checkedNames" />
+  <label for="john">John</label>
+  <input type="checkbox" id="mike" value="Mike" v-model="checkedNames" />
+  <label for="mike">Mike</label>
+  <p>Checked names: <pre>{{ checkedNames }}</pre></p>
+
+  <h2>Radio</h2>
+  <input type="radio" id="one" value="One" v-model="picked">
+  <label for="one">One</label>
+  <br>
+  <input type="radio" id="two" value="Two" v-model="picked">
+  <label for="two">Two</label>
+  <br>
+  <span>Picked: {{ picked }}</span>
+
+  <h2>Select</h2>
+  <select v-model="selected">
+  <option disabled value="">Please select one</option>
+  <option>A</option>
+  <option>B</option>
+  <option>C</option>
+  </select>
+  <span>{{ selected }}</span>
+  
+  <h2>Multi Selected</h2>
+  <select v-model="multiSelected" multiple
+  style = "width:100px">
+  <option>A</option>
+  <option>B</option>
+  <option>C</option>
+  </select>
+  <span>Selected: {{  multiSelected }}</span>
 </template>
