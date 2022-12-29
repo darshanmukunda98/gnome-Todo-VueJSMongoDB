@@ -1,9 +1,7 @@
 <script setup>
 import {ref} from 'vue'
-import ChildComp from './ChildComp.vue'
-
-const msg = ref('from parent')
+const message = ref('Hello World!')
 </script>
 <template>
-<ChildComp>Message: {{ msg }}</ChildComp>
+  <h1>{{ message }}</h1>
 </template>
