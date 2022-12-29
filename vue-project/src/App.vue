@@ -1,25 +1,35 @@
 <script setup>
 import { ref } from "vue";
+
 const message = ref("Hello World");
-function reverseMessage() {
-  message.value = message.value.split("").reverse().join("");
+const isRed = ref(true);
+const color = ref("green");
+
+function toggleRed() {
+  isRed.value = !isRed.value;
 }
-function notify() {
-  alert("navigation was prevented");
+
+function toggleColor() {
+  color.value = color.value === "green" ? "blue" : "green";
 }
 </script>
 <template>
-  <h1>{{ message }}</h1>
-  <button @click="reverseMessage">Reverse Message</button>
-  <button @click="message += '!'">Append "!"</button>
-  <a href="https://vuejs.org" @click.prevent="notify">
-    A link with e.preventDefault()
-  </a>
+  <p>
+    <span :title="message">
+      Hover your mouse over for me a few seconds to see my dynamically bound
+      title!
+    </span>
+  </p>
+  <p :class="{ red: isRed }" @click="toggleRed">
+    This should be red... but click me to toggle it.
+  </p>
+  <p :style="{ color }" @click="toggleColor">
+    This should be green, and should toggle between green and blue on click
+  </p>
+
 </template>
 <style>
-button,
-a {
-  display: block;
-  margin-bottom: 1em;
+.red{
+  color: red;
 }
 </style>
