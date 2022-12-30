@@ -1,19 +1,20 @@
 <script setup>
-import { ref } from "vue";
-import TodoItem from "./TodoItem.vue";
+import {ref} from 'vue'
 
-const groceryList = ref([
-  { id: 0, text: "Vegetables" },
-  { id: 1, text: "Cheese" },
-  { id: 2, text: "Whatever else humans are supposed to eat" },
-]);
+function addTodo(e){
+  console.log(e.target.value)
+}
 </script>
 <template>
-  <ol>
-    <TodoItem
-      v-for="item in groceryList"
-      :todo="item"
-      :key="item.id"
-    ></TodoItem>
-  </ol>
+  <section class="todoapp">
+    <header class="header">
+      <h1>todos</h1>
+      <input
+      class="new-todo"
+      autofocus
+      placeholder="What needs to be done?"
+      @keyup.enter="addTodo"
+      >
+    </header>
+  </section>
 </template>
