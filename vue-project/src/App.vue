@@ -1,30 +1,63 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed, watchEffect } from "vue";
 
-const todos = ref([]);
+let id = 0;
+
+const newTodo = ref("");
+const hideCompleted = ref(false);
+
+const todos = ref(JSON.parse(localStorage.getItem("todos") || "[]"));
+watchEffect(() => {
+  localStorage.setItem("todos", JSON.stringify(todos.value));
+});
+const filteredTodos = computed(() => {
+  return hideCompleted.value ? todos.value.filter((t) => !t.done) : todos.value;
+});
+
 function addTodo(e) {
   const value = e.target.value;
-  if (value) {
+  if (value)
     todos.value.push({
-      id: Date.now(),
-      title: value,
-      completed: false,
+      id: id++,
+      text: value,
+      done: false,
     });
-    e.target.value = "";
-  }
-  console.log(todos.value)
+  e.target.value = "";
+}
+
+
+function removeTodo(todo) {
+  todos.value.splice(todos.value.indexOf(todo), 1)
+}
+function editTodo(todo) {
+  
+  todo.text = todo.text
 }
 </script>
+
 <template>
-  <section class="todoapp">
-    <header class="header">
-      <h1>todos</h1>
-      <input
-        class="new-todo"
-        autofocus
-        placeholder="What needs to be done?"
-        @keyup.enter="addTodo"
-      />
-    </header>
-  </section>
+  <h1>todos</h1>
+  
+  <input
+    class="new-todo"
+    autofocus
+    placeholder="What needs to be done?"
+    @keyup.enter="addTodo"
+  />
+  <ul>
+    <li v-for="todo in filteredTodos" :key="todo.id">
+      <input type="checkbox" v-model="todo.done" />
+      <span :class="{ done: todo.done }" @dblclick="editTodo(todo)">{{ todo.text }}</span>
+      <button @click="removeTodo(todo)">X</button>
+    </li>
+  </ul>
+  <button @click="hideCompleted = !hideCompleted">
+    {{ hideCompleted ? "Show all" : "Hide completed" }}
+  </button>
 </template>
+
+<style>
+.done {
+  text-decoration: line-through;
+}
+</style>
