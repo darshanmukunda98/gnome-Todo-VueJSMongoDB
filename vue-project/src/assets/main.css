@@ -12,5 +12,9 @@
   font-family: Arial, Helvetica, sans-serif;
   color:red;
 }
-
+.list{
+  border: 1px solid grey;
+  box-shadow: 5px 5px grey;
+  width: 700px;
+}
 
