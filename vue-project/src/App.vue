@@ -12,16 +12,17 @@ console.log(checkAllDone);
 
 function onInput(e) {
   console.log('TITLE ' + e.target.value);
+  if (e.target.value === '') return;
   let title = e.target.value;
   e.target.value = '';
   todos.value.push({
     id: Date.now(),
     title: title,
     done: false,
-    notes:"",
-    date:"",
-    priority:"",
-    deleted:false
+    notes: '',
+    date: '',
+    priority: 'none',
+    deleted: false
   });
   console.log('TODOS');
   console.log(todos.value);
@@ -84,17 +85,25 @@ function allDone(e) {
               <textarea
                 class="todo--item--notes"
                 style="height: 98px; width: 400px"
+                v-model="todos[index].notes"
               ></textarea>
             </div>
             <div style="display: flex; flex-direction: column; margin: auto">
               <div style="display: flex; flex-direction: column; padding: 10px">
                 <label class="todo--item--date--label">Date</label>
-                <input class="todo--item--date" type="date" />
+                <input
+                  class="todo--item--date"
+                  type="date"
+                  v-model="todos[index].date"
+                />
               </div>
               <div style="display: flex; flex-direction: column; padding: 10px">
                 <label class="todo--item--priority--label">Priority</label>
-                <select class="todo--item--priority">
-                  <option disabled selected>None</option>
+                <select
+                  class="todo--item--priority"
+                  v-model="todos[index].priority"
+                >
+                  <option value="none">None</option>
                   <option value="high">High</option>
                   <option value="medium">Medium</option>
                   <option value="low">Low</option>
@@ -105,11 +114,10 @@ function allDone(e) {
         </details>
       </div>
       <footer class="footer">
-        <span v-text="todos.length"></span> items left
-        <input type="button" value="All" /><input
-          type="button"
-          value="Active"
-        /><input type="button" value="Completed" />
+        <span>{{ todos.length }} items left</span>
+        <input class="footer--button" type="button" value="All" />
+        <input class="footer--button" type="button" value="Active" />
+        <input class="footer--button" type="button" value="Completed" />
       </footer>
     </div>
   </div>
@@ -118,20 +126,20 @@ function allDone(e) {
 .app {
   display: flex;
   flex-direction: column;
-
+  font-family: sans-serif;
   align-items: center;
   height: auto;
 }
 .app h1 {
   font-size: 100px;
   font-weight: 100;
-  font-family: Arial, Helvetica, sans-serif;
-  color: red;
+
+  color: rgb(255, 100, 100);
 }
 .list {
-  border: 1px solid grey;
-  box-shadow: 5px 5px grey;
-  width: auto;
+  /* border: 1px solid grey; */
+/*   box-shadow: 5px 5px grey; */
+box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;  width: 600px;
 }
 
 .todo--input {
@@ -168,17 +176,19 @@ function allDone(e) {
 }
 .todo--item--menu--content {
   display: flex;
-
+  color:grey;
   padding: 10px;
 }
 .todo--item--expand {
-  padding-left: 390px;
+  padding-left: 250px;
+  font-size:x-small;
+  align-self: center;
 }
 .todo--item--delete {
   border-radius: 50%;
   border: none;
   color: white;
-  background-color: red;
+  background-color: rgb(255, 100, 100);
   margin: auto;
 }
 .todo--item--checkbox {
@@ -188,13 +198,22 @@ function allDone(e) {
   content: '✓';
 }
 .todo--item--title {
-  width: 30%;
+  width: 100%;
   border-style: none;
   font-size: large;
 }
 .footer {
+  font-size: small;
   display: flex;
   gap: 10px;
   justify-content: center;
+  align-items: center;
+}
+
+.footer--button {
+  color: gray;
+  border-color: gray;
+  border-radius: 10%;
+  border-width: 1px;
 }
 </style>
