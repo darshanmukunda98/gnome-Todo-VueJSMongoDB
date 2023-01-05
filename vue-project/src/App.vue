@@ -1,27 +1,22 @@
 <script setup>
 import { ref } from 'vue';
 
-// let data = ;
-// console.log((data = data));
-let todos = ref(
-  JSON.parse(localStorage.getItem('todos') || '[]')/* .filter(
-    (todo) => todo.deleted === false */
-  )
-/* ); */
-let checkAllDone;
+let todos = ref(loadData() || []);
 
-checkAllDone =
-  todos.value.length === 0
-    ? false
-    : (checkAllDone = todos.value.every((todo) => todo.done === true));
+const isDone = (todo) => todo.done === true;
+let checkAllDone = todos.value.length != 0 && todos.value.every(isDone);
 console.log(checkAllDone);
 
-function onInput(e) {
-  console.log('TITLE ' + e.target.value);
-  if (e.target.value === '') return;
-  let title = e.target.value;
-  e.target.value = '';
-  todos.value.push({
+function loadData() {
+  return JSON.parse(localStorage.getItem('todos'));
+}
+
+function saveData(data) {
+  localStorage.setItem('todos', JSON.stringify(data));
+}
+
+function getTodo(title) {
+  return {
     id: Date.now(),
     title: title,
     done: false,
@@ -29,52 +24,36 @@ function onInput(e) {
     date: '',
     priority: 'none',
     deleted: false
-  });
-  console.log('TODOS');
-  console.log(todos.value);
-  localStorage.setItem('todos', JSON.stringify(todos.value));
+  };
+}
+
+function onInput(event) {
+  const target = event.target;
+  if (target.value === '') return;
+  let title = target.value;
+  target.value = '';
+  todos.value.push(getTodo(title));
+  saveData(todos.value);
 }
 
 function onChange(e) {
-  console.log(e.target.value);
-
-  localStorage.setItem('todos', JSON.stringify(todos.value));
+  saveData(todos.value);
 }
 function onDelete(e) {
-  //console.log(e.target.id +"=="+typeof(e.target.id));
-  //console.log(todos.value[0].id+"=="+typeof(todos.value[0].id));
-  //console.log(todos.value.length)
-  let len = todos.value.length
+  let len = todos.value.length;
   for (let i = 0; i < len; i++) {
-    console.log('LOOP')
-    console.log('LOOP '+todos.value[i].id+" === "+e.target.id+" => "+todos.value[i].id === e.target.id )
     if (todos.value[i].id == e.target.id) {
-      
       todos.value[i].deleted = true;
-      console.log(todos.value[i])
     }
-    
   }
-  /* console.log(todos.value.findIndex(el => el.id === e.target.id))
-  todos.value[todos.value.findIndex(el => el.id === e.target.id)].deleted = true
-   */
-  //todos.value = todos.value.filter((todo) => todo.deleted === false);
-  localStorage.setItem('todos', JSON.stringify(todos.value));
+  saveData(todos.value);
 }
 
 function allDone(e) {
-  if (checkAllDone) {
-    todos.value.map((todo) => {
-      todo.done = true;
-    });
-    checkAllDone = true;
-  } else {
-    todos.value.map((todo) => {
-      todo.done = false;
-    });
-    checkAllDone = false;
-  }
-  localStorage.setItem('todos', JSON.stringify(todos.value));
+  todos.value.map((todo) => {
+    todo.done = checkAllDone;
+  });
+  saveData(todos.value);
 }
 </script>
 <template>
@@ -91,8 +70,12 @@ function allDone(e) {
         />
       </span>
       <div v-for="(item, index) in todos" :key="item.id">
-        <details v-if="!todos[index].deleted" class="todo--item"  :id="item.id" @change="onChange">
-          {{todos.deleted}}
+        <details
+          v-if="!todos[index].deleted"
+          class="todo--item"
+          :id=item.id
+          @change="onChange"
+        >
           <summary class="todo--item--menu" style="">
             <input
               class="todo--item--checkbox"
@@ -100,20 +83,18 @@ function allDone(e) {
               name="checkbox"
               v-model="todos[index].done"
             />
-            
+
             <input
               class="todo--item--title"
-              :class="{done: todos[index].done}"
+              :class="{ done: todos[index].done }"
               v-model="todos[index].title"
               name="title"
             />
             <span class="todo--item--expand">▼</span>
 
-            <button
-              class="todo--item--delete"
-              :id="item.id"
-              @click="onDelete"
-            >❌</button>
+            <button class="todo--item--delete" :id="item.id" @click="onDelete">
+              ❌
+            </button>
           </summary>
           <div class="todo--item--menu--content">
             <div style="display: flex; flex-direction: column">
@@ -150,7 +131,12 @@ function allDone(e) {
         </details>
       </div>
       <footer class="footer">
-        <span>{{ todos.filter((todo)=>!todo.deleted && !todo.done).length }} items left</span>
+        <span
+          >{{
+            todos.filter((todo) => !todo.deleted && !todo.done).length
+          }}
+          items left</span
+        >
         <input class="footer--button" type="button" value="All" />
         <input class="footer--button" type="button" value="Active" />
         <input class="footer--button" type="button" value="Completed" />
@@ -222,14 +208,12 @@ function allDone(e) {
   margin-left: 250px;
   font-size: x-small;
   align-self: center;
-  
- 
 }
 .todo--item--expand:hover {
   margin-left: 250px;
   font-size: x-small;
   align-self: center;
-  
+
   transform: rotate(180deg);
 }
 .todo--item--delete {
@@ -240,7 +224,6 @@ function allDone(e) {
   margin: auto;
 }
 .todo--item--checkbox {
-  
 }
 .todo--item--checkbox:checked {
   content: '✓';
@@ -251,8 +234,8 @@ function allDone(e) {
   font-size: large;
 }
 .done {
- opacity:0.2;
- text-decoration: line-through;
+  opacity: 0.2;
+  text-decoration: line-through;
 }
 .footer {
   font-size: small;
