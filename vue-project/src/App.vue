@@ -1,7 +1,13 @@
 <script setup>
 import { ref } from 'vue';
 
-let todos = ref(JSON.parse(localStorage.getItem('data') || '[]'));
+// let data = ;
+// console.log((data = data));
+let todos = ref(
+  JSON.parse(localStorage.getItem('todos') || '[]')/* .filter(
+    (todo) => todo.deleted === false */
+  )
+/* ); */
 let checkAllDone;
 
 checkAllDone =
@@ -26,12 +32,34 @@ function onInput(e) {
   });
   console.log('TODOS');
   console.log(todos.value);
-  localStorage.setItem('data', JSON.stringify(todos.value));
+  localStorage.setItem('todos', JSON.stringify(todos.value));
 }
 
 function onChange(e) {
   console.log(e.target.value);
-  localStorage.setItem('data', JSON.stringify(todos.value));
+
+  localStorage.setItem('todos', JSON.stringify(todos.value));
+}
+function onDelete(e) {
+  //console.log(e.target.id +"=="+typeof(e.target.id));
+  //console.log(todos.value[0].id+"=="+typeof(todos.value[0].id));
+  //console.log(todos.value.length)
+  let len = todos.value.length
+  for (let i = 0; i < len; i++) {
+    console.log('LOOP')
+    console.log('LOOP '+todos.value[i].id+" === "+e.target.id+" => "+todos.value[i].id === e.target.id )
+    if (todos.value[i].id == e.target.id) {
+      
+      todos.value[i].deleted = true;
+      console.log(todos.value[i])
+    }
+    
+  }
+  /* console.log(todos.value.findIndex(el => el.id === e.target.id))
+  todos.value[todos.value.findIndex(el => el.id === e.target.id)].deleted = true
+   */
+  //todos.value = todos.value.filter((todo) => todo.deleted === false);
+  localStorage.setItem('todos', JSON.stringify(todos.value));
 }
 
 function allDone(e) {
@@ -46,7 +74,7 @@ function allDone(e) {
     });
     checkAllDone = false;
   }
-  localStorage.setItem('data', JSON.stringify(todos.value));
+  localStorage.setItem('todos', JSON.stringify(todos.value));
 }
 </script>
 <template>
@@ -63,7 +91,8 @@ function allDone(e) {
         />
       </span>
       <div v-for="(item, index) in todos" :key="item.id">
-        <details class="todo--item" :id="item.id" @change="onChange">
+        <details v-if="!todos[index].deleted" class="todo--item"  :id="item.id" @change="onChange">
+          {{todos.deleted}}
           <summary class="todo--item--menu" style="">
             <input
               class="todo--item--checkbox"
@@ -71,13 +100,20 @@ function allDone(e) {
               name="checkbox"
               v-model="todos[index].done"
             />
+            
             <input
               class="todo--item--title"
+              :class="{done: todos[index].done}"
               v-model="todos[index].title"
               name="title"
             />
             <span class="todo--item--expand">▼</span>
-            <input class="todo--item--delete" type="button" value="✕" />
+
+            <button
+              class="todo--item--delete"
+              :id="item.id"
+              @click="onDelete"
+            >❌</button>
           </summary>
           <div class="todo--item--menu--content">
             <div style="display: flex; flex-direction: column">
@@ -114,7 +150,7 @@ function allDone(e) {
         </details>
       </div>
       <footer class="footer">
-        <span>{{ todos.length }} items left</span>
+        <span>{{ todos.filter((todo)=>!todo.deleted && !todo.done).length }} items left</span>
         <input class="footer--button" type="button" value="All" />
         <input class="footer--button" type="button" value="Active" />
         <input class="footer--button" type="button" value="Completed" />
@@ -138,8 +174,11 @@ function allDone(e) {
 }
 .list {
   /* border: 1px solid grey; */
-/*   box-shadow: 5px 5px grey; */
-box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;  width: 600px;
+  /*   box-shadow: 5px 5px grey; */
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  width: 600px;
 }
 
 .todo--input {
@@ -176,13 +215,22 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30p
 }
 .todo--item--menu--content {
   display: flex;
-  color:grey;
+  color: grey;
   padding: 10px;
 }
 .todo--item--expand {
-  padding-left: 250px;
-  font-size:x-small;
+  margin-left: 250px;
+  font-size: x-small;
   align-self: center;
+  
+ 
+}
+.todo--item--expand:hover {
+  margin-left: 250px;
+  font-size: x-small;
+  align-self: center;
+  
+  transform: rotate(180deg);
 }
 .todo--item--delete {
   border-radius: 50%;
@@ -192,7 +240,7 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30p
   margin: auto;
 }
 .todo--item--checkbox {
-  content: '';
+  
 }
 .todo--item--checkbox:checked {
   content: '✓';
@@ -201,6 +249,10 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30p
   width: 100%;
   border-style: none;
   font-size: large;
+}
+.done {
+ opacity:0.2;
+ text-decoration: line-through;
 }
 .footer {
   font-size: small;
