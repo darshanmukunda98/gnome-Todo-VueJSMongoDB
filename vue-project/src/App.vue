@@ -28,8 +28,8 @@ function getTodo(title) {
 }
 
 function onInput(event) {
+  if (event.target.value === '') return;
   const target = event.target;
-  if (target.value === '') return;
   let title = target.value;
   target.value = '';
   todos.value.push(getTodo(title));
@@ -39,6 +39,7 @@ function onInput(event) {
 function onChange(e) {
   saveData(todos.value);
 }
+
 function onDelete(e) {
   let len = todos.value.length;
   for (let i = 0; i < len; i++) {
@@ -55,6 +56,7 @@ function allDone(e) {
   });
   saveData(todos.value);
 }
+
 </script>
 <template>
   <div class="app">
@@ -73,7 +75,7 @@ function allDone(e) {
         <details
           v-if="!todos[index].deleted"
           class="todo--item"
-          :id=item.id
+          :id="item.id"
           @change="onChange"
         >
           <summary class="todo--item--menu" style="">
