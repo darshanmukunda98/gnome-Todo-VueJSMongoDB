@@ -2,7 +2,13 @@
 import { ref } from 'vue';
 
 let todos = ref(loadData() || []);
-let reset = ''
+let reset = '';
+let filter = ref();
+filter.value = (todo) => {
+  console.log(todo)
+  return !todo.deleted;
+}
+console.log(filter.value)
 
 const isDone = (todo) => todo.done === true;
 let checkAllDone = todos.value.length != 0 && todos.value.every(isDone);
@@ -16,7 +22,7 @@ function saveData(data) {
   localStorage.setItem('todos', JSON.stringify(data));
 }
 
-function createTodo(title) { 
+function createTodo(title) {
   return {
     id: Date.now(),
     title: title,
@@ -28,11 +34,11 @@ function createTodo(title) {
   };
 }
 
-function getTodo(event) { 
-  console.log(reset)
+function getTodo(event) {
+  
   if (event.target.value === '') return;
   const target = event.target;
-  let title = target.value; 
+  let title = target.value;
   todos.value.push(createTodo(title));
   saveData(todos.value);
 }
@@ -42,28 +48,32 @@ function saveTodoDetails(e) {
 }
 
 function deleteTodo(e) {
-  todos.value.find((todo)=>todo.id == e.target.id).deleted = true
+  todos.value.find((todo) => todo.id == e.target.id).deleted = true;
   saveData(todos.value);
 }
 
-function setAllDone(e) { 
+function setAllDone(e) {
   todos.value.map((todo) => {
     todo.done = checkAllDone;
   });
   saveData(todos.value);
 }
-function filterAll(){
-  todos.value = loadData()
+function filterAll() {
+  filter.value = (todo) => {
+    return !todo.deleted;
+  };
+  return filter.value;
 }
-function filterActive(){
-  todos.value = loadData()
-  todos.value = todos.value.filter(todo=>!todo.done && !todo.deleted)
+function filterActive() {
+  filter.value = (todo) => {
+    return !todo.done && !todo.deleted;
+  };
 }
-function filterCompleted(){
-  todos.value = loadData()
-  todos.value = todos.value.filter(todo=>todo.done && !todo.deleted)
+function filterCompleted() {
+  filter.value = (todo) => {
+    return todo.done && !todo.deleted;
+  }; 
 }
-
 </script>
 <template>
   <div class="app">
@@ -80,8 +90,16 @@ function filterCompleted(){
         />
       </span>
       <div v-for="(item, index) in todos" :key="item.id">
+        
+        <!-- <details
+          v-if="!item.deleted && filter(item)"
+          
+          class="todo--item"
+          :id="item.id"
+          @change="saveTodoDetails"
+        > -->
         <details
-          v-if="!todos[index].deleted"
+          v-if="filter(item)"
           class="todo--item"
           :id="item.id"
           @change="saveTodoDetails"
@@ -91,7 +109,7 @@ function filterCompleted(){
               class="todo--item--checkbox"
               type="checkbox"
               name="checkbox"
-              v-model="todos[index].done"
+              v-model="item.done"
             />
 
             <input
@@ -102,7 +120,11 @@ function filterCompleted(){
             />
             <span class="todo--item--expand">▼</span>
 
-            <button class="todo--item--delete" :id="item.id" @click="deleteTodo">
+            <button
+              class="todo--item--delete"
+              :id="item.id"
+              @click="deleteTodo"
+            >
               ❌
             </button>
           </summary>
@@ -112,7 +134,7 @@ function filterCompleted(){
               <textarea
                 class="todo--item--notes"
                 style="height: 98px; width: 400px"
-                v-model="todos[index].notes"
+                v-model="item.notes"
               ></textarea>
             </div>
             <div style="display: flex; flex-direction: column; margin: auto">
@@ -121,15 +143,12 @@ function filterCompleted(){
                 <input
                   class="todo--item--date"
                   type="date"
-                  v-model="todos[index].date"
+                  v-model="item.date"
                 />
               </div>
               <div style="display: flex; flex-direction: column; padding: 10px">
                 <label class="todo--item--priority--label">Priority</label>
-                <select
-                  class="todo--item--priority"
-                  v-model="todos[index].priority"
-                >
+                <select class="todo--item--priority" v-model="item.priority">
                   <option value="none">None</option>
                   <option value="high">High</option>
                   <option value="medium">Medium</option>
@@ -147,9 +166,24 @@ function filterCompleted(){
           }}
           items left</span
         >
-        <input class="footer--button" type="button" value="All" @click="filterAll" />
-        <input class="footer--button" type="button" value="Active" @click="filterActive" />
-        <input class="footer--button" type="button" value="Completed" @click="filterCompleted"/>
+        <input
+          class="footer--button"
+          type="button"
+          value="All"
+          @click="filterAll"
+        />
+        <input
+          class="footer--button"
+          type="button"
+          value="Active"
+          @click="filterActive"
+        />
+        <input
+          class="footer--button"
+          type="button"
+          value="Completed"
+          @click="filterCompleted"
+        />
       </footer>
     </div>
   </div>
@@ -160,7 +194,6 @@ function filterCompleted(){
   flex-direction: column;
   font-family: sans-serif;
   align-items: center;
-
 }
 .app h1 {
   font-size: 100px;
