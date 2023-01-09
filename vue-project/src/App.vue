@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 
 let todos = ref(loadData() || []);
+let reset = ''
 
 const isDone = (todo) => todo.done === true;
 let checkAllDone = todos.value.length != 0 && todos.value.every(isDone);
@@ -15,7 +16,7 @@ function saveData(data) {
   localStorage.setItem('todos', JSON.stringify(data));
 }
 
-function getTodo(title) {
+function createTodo(title) { 
   return {
     id: Date.now(),
     title: title,
@@ -27,34 +28,40 @@ function getTodo(title) {
   };
 }
 
-function onInput(event) {
+function getTodo(event) { 
+  console.log(reset)
   if (event.target.value === '') return;
   const target = event.target;
-  let title = target.value;
-  target.value = '';
-  todos.value.push(getTodo(title));
+  let title = target.value; 
+  todos.value.push(createTodo(title));
   saveData(todos.value);
 }
 
-function onChange(e) {
+function saveTodoDetails(e) {
   saveData(todos.value);
 }
 
-function onDelete(e) {
-  let len = todos.value.length;
-  for (let i = 0; i < len; i++) {
-    if (todos.value[i].id == e.target.id) {
-      todos.value[i].deleted = true;
-    }
-  }
+function deleteTodo(e) {
+  todos.value.find((todo)=>todo.id == e.target.id).deleted = true
   saveData(todos.value);
 }
 
-function allDone(e) {
+function setAllDone(e) { 
   todos.value.map((todo) => {
     todo.done = checkAllDone;
   });
   saveData(todos.value);
+}
+function filterAll(){
+  todos.value = loadData()
+}
+function filterActive(){
+  todos.value = loadData()
+  todos.value = todos.value.filter(todo=>!todo.done && !todo.deleted)
+}
+function filterCompleted(){
+  todos.value = loadData()
+  todos.value = todos.value.filter(todo=>todo.done && !todo.deleted)
 }
 
 </script>
@@ -63,9 +70,10 @@ function allDone(e) {
     <h1>todos</h1>
     <div class="list">
       <span class="todo--input">
-        <input type="checkbox" @change="allDone" v-model="checkAllDone" />
+        <input type="checkbox" @change="setAllDone" v-model="checkAllDone" />
         <input
-          @keydown.enter="onInput"
+          @keydown.enter="getTodo"
+          :value="reset"
           class="todo--title--input"
           autofocus
           placeholder="Whats needs to be done?"
@@ -76,7 +84,7 @@ function allDone(e) {
           v-if="!todos[index].deleted"
           class="todo--item"
           :id="item.id"
-          @change="onChange"
+          @change="saveTodoDetails"
         >
           <summary class="todo--item--menu" style="">
             <input
@@ -89,12 +97,12 @@ function allDone(e) {
             <input
               class="todo--item--title"
               :class="{ done: todos[index].done }"
-              v-model="todos[index].title"
+              v-model="item.title"
               name="title"
             />
             <span class="todo--item--expand">▼</span>
 
-            <button class="todo--item--delete" :id="item.id" @click="onDelete">
+            <button class="todo--item--delete" :id="item.id" @click="deleteTodo">
               ❌
             </button>
           </summary>
@@ -139,9 +147,9 @@ function allDone(e) {
           }}
           items left</span
         >
-        <input class="footer--button" type="button" value="All" />
-        <input class="footer--button" type="button" value="Active" />
-        <input class="footer--button" type="button" value="Completed" />
+        <input class="footer--button" type="button" value="All" @click="filterAll" />
+        <input class="footer--button" type="button" value="Active" @click="filterActive" />
+        <input class="footer--button" type="button" value="Completed" @click="filterCompleted"/>
       </footer>
     </div>
   </div>
@@ -152,7 +160,7 @@ function allDone(e) {
   flex-direction: column;
   font-family: sans-serif;
   align-items: center;
-  height: auto;
+
 }
 .app h1 {
   font-size: 100px;
