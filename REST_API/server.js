@@ -27,13 +27,13 @@ console.log(
 await find_result.forEach(element => {
   console.log(element)
 }) */
-const filter = { title: "todo 2" }
+const filter = { title: "todo 3" }
 const updateDoc = {
   $set: {
-    notes: "notes 2"
+    notes: "notes 3"
   },
 };
-const result = await collection.updateOne(filter, updateDoc);
+const result = await collection.findOneAndUpdate(filter, updateDoc);
     console.log(
       result
     );
