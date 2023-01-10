@@ -11,22 +11,24 @@ async function main() {
   console.log('Connected successfully to server');
   const db = client.db(dbName);
   const collection = db.collection('todos');
-  const doc = {
-    title: 'todo 2',
+/*   const doc = {
+    title: 'todo 3',
     done: false,
     notes: '',
     date: '',
     priority: 'none',
     deleted: false
   }
-// const result = await collection.insertOne(doc);
-// console.log(
-//    `A document was inserted with the _id: ${result.insertedId}`,
-// );
-const find_result = await collection.findOne({ "_id": ObjectId("63bd1037b551062665b049ba") })
-console.log(find_result)
+const result = await collection.insertOne(doc);
+console.log(
+   `A document was inserted with the _id: ${result.insertedId}`,
+); */
+const find_result = await collection.find({})
+await find_result.forEach(element => {
+  console.log(element)
+})
   return '.done'
-}
+} 
 
 main()
   .then(console.log)
