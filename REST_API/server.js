@@ -10,6 +10,18 @@ async function main() {
   console.log('Connected successfully to server');
   const db = client.db(dbName);
   const collection = db.collection('todos');
+  const doc = {
+    title: 'todo 1',
+    done: false,
+    notes: '',
+    date: '',
+    priority: 'none',
+    deleted: false
+  }
+const result = await collection.insertOne(doc);
+console.log(
+   `A document was inserted with the _id: ${result.insertedId}`,
+);
   return '.done'
 }
 
