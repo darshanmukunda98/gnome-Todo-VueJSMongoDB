@@ -1,4 +1,5 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
+
 
 const url = 'mongodb://127.0.0.1:27017/';
 const client = new MongoClient(url);
@@ -11,17 +12,19 @@ async function main() {
   const db = client.db(dbName);
   const collection = db.collection('todos');
   const doc = {
-    title: 'todo 1',
+    title: 'todo 2',
     done: false,
     notes: '',
     date: '',
     priority: 'none',
     deleted: false
   }
-const result = await collection.insertOne(doc);
-console.log(
-   `A document was inserted with the _id: ${result.insertedId}`,
-);
+// const result = await collection.insertOne(doc);
+// console.log(
+//    `A document was inserted with the _id: ${result.insertedId}`,
+// );
+const find_result = await collection.findOne({ "_id": ObjectId("63bd1037b551062665b049ba") })
+console.log(find_result)
   return '.done'
 }
 
