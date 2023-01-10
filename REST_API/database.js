@@ -1,16 +1,31 @@
-const { MongoClient, ObjectId } = require('mongodb');
+import { MongoClient, ObjectId } from 'mongodb';
 
 const url = 'mongodb://127.0.0.1:27017/';
 const client = new MongoClient(url);
-
 const dbName = 'todos';
+const db = client.db(dbName);
+    const collection = db.collection('todos');
 
-async function main() {
-  await client.connect();
-  console.log('Connected successfully to server');
-  const db = client.db(dbName);
-  const collection = db.collection('todos');
-  /*   const doc = {
+export async function connDB() {
+  try {
+    await client.connect();
+    console.log('Connected successfully to server');
+    
+  } catch (error) {
+    console.log(error);
+  } 
+  return 'done.'
+}
+export async function getAllTodos() {
+  const todos = [];
+  const find_result = collection.find({});
+  await find_result.forEach((element) => {
+    todos.push(element);
+  });
+  return todos;
+}
+
+/*   const doc = {
     title: 'todo 3',
     done: false,
     notes: '',
@@ -22,11 +37,11 @@ const result = await collection.insertOne(doc);
 console.log(
    `A document was inserted with the _id: ${result.insertedId}`,
 ); */
-  /* const find_result = await collection.find({})
+/*   const find_result = collection.find({})
 await find_result.forEach(element => {
   console.log(element)
 }) */
-  /* const filter = { title: "todo 3" }
+/* const filter = { title: "todo 3" }
 const updateDoc = {
   $set: {
     notes: "notes 3"
@@ -36,16 +51,14 @@ const result = await collection.findOneAndUpdate(filter, updateDoc);
     console.log(
       result
     ); */
-  const filter = {};
+/*   const filter = {};
   const updateDoc = { $set: { done: true } };
   const result = await collection.updateMany(filter, updateDoc);
-  console.log(result);
-  /* const find_result = await collection.findOne({ _id: ObjectId("63bd1604166c68e8f13d3d67") })
+  console.log(result); */
+/* const find_result = await collection.findOne({ _id: ObjectId("63bd1604166c68e8f13d3d67") })
 console.log(find_result) */
-  return '.done';
-}
 
-main()
+/* main()
   .then(console.log)
   .catch(console.error)
-  .finally(() => client.close());
+  .finally(() => client.close()); */
