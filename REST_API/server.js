@@ -1,4 +1,4 @@
-import { connDB, getAllTodos, insertOneTodo } from './database.js';
+import { connDB, getAllTodos, insertOneTodo } from './model/database.js';
 import express  from 'express';
 
 const app = express();
@@ -30,3 +30,5 @@ const insertTodo = async () => {
 };
 //getTodos();
 insertTodo();
+
+export default app;
