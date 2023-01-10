@@ -4,7 +4,7 @@ const url = 'mongodb://127.0.0.1:27017/';
 const client = new MongoClient(url);
 const dbName = 'todos';
 const db = client.db(dbName);
-    const collection = db.collection('todos');
+const collection = db.collection('todos');
 
 export async function connDB() {
   try {
@@ -23,6 +23,12 @@ export async function getAllTodos() {
     todos.push(element);
   });
   return todos;
+}
+export async function insertOneTodo(todo){
+const result = await collection.insertOne(todo);
+console.log(
+   `A document was inserted with the _id: ${result.insertedId}`,
+);
 }
 
 /*   const doc = {
