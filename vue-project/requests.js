@@ -34,6 +34,14 @@ async function deleteTodo(id){
       ).json();
       console.log(response);
 }
+async function markAllDone(){
+    let response = await (
+        await fetch('http://localhost:3000/done/', {
+          method: 'PUT',
+        })
+      ).json();
+      console.log(response);
+}
 //fetchAllTodos();
 /* insertTodo({
   title: 'Todo 11',
@@ -51,4 +59,6 @@ async function deleteTodo(id){
   priority: 'none',
   deleted: false
 }); */
-deleteTodo('63be9414f728db150ff01857')
+/* deleteTodo('63be9414f728db150ff01857') */
+markAllDone()
+
