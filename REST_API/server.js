@@ -3,7 +3,8 @@ import {
   addTodoFields,
   deleteTodo,
   getAllTodos,
-  insertOneTodo
+  insertOneTodo,
+  markAllTodosDone
 } from './model/database.js';
 
 const app = express();
@@ -38,7 +39,10 @@ app.delete('/delete/:id', async (req, res) => {
   console.log(result)
   res.json({result: result });
 });
-app.put('/done','')
+app.put('/done',async(req,res)=>{
+    const result = await markAllTodosDone()
+    res.json({result:result.modifiedCount})
+})
 
 app.listen(3000, () => {
   console.log('App listening on port 3000');

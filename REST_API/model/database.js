@@ -51,7 +51,7 @@ export async function markAllTodosDone() {
   const filter = {};
   const updateDoc = { $set: { done: true } };
   const result = await collection.updateMany(filter, updateDoc);
-  console.log(result);
+  return result
 }
 
 /*   const doc = {
