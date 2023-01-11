@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllTodos, insertOneTodo } from './model/database.js';
+import { addTodoFields, getAllTodos, insertOneTodo } from './model/database.js';
 
 const app = express();
 app.use(express.json());
@@ -16,18 +16,19 @@ app.get('/', async (req, res) => {
 app.post('/insert', async (req, res) => {
   try {
     console.log(req.body);
-    const todo = await insertOneTodo(req.body);
-    res.json(todo);
+    const result = await insertOneTodo(req.body);
+    res.json({ body: req.body, insertion: result });
   } catch (err) {
     console.log(err);
   }
 });
 
-app.put('/user', (req, res) => {
-  res.send('Got a PUT request at /user');
+app.put('/update/:id', async (req, res) => {
+  const result = await addTodoFields(req.params.id, req.body);
+  res.json({ body: req.body, result: result });
 });
 
-app.delete('/user', (req, res) => {
+app.delete('/', (req, res) => {
   res.send('Got a DELETE request at /user');
 });
 

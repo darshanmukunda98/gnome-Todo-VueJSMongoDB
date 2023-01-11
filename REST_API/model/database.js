@@ -26,25 +26,28 @@ export async function getAllTodos() {
 export async function insertOneTodo(todo) {
   const result = await collection.insertOne(todo);
   console.log(`A document was inserted with the _id: ${result.insertedId}`);
+  return result.acknowledged;
 }
 export async function addTodoFields(id, todofields) {
-  const filter = { _id: id };
+  const filter = {
+    _id: ObjectId(id)
+  };
   const updateDoc = {
     $set: todofields
   };
-  const result = await collection.findOneAndUpdate(filter, updateDoc);
-  console.log(result);
-  return result
+  const result = await collection.updateOne(filter, updateDoc);
+  return result.modifiedCount;
 }
-export async function deleteTodo(id){
-  const filter = { _id: id };
+export async function deleteTodo(id) {
+  const filter = { title: id };
   const updateDoc = {
-    $set: {deleted: true}
+    $set: { deleted: true }
   };
   const result = await collection.findOneAndUpdate(filter, updateDoc);
+  console.log(filter);
   console.log(result);
 }
-export async function markAllTodosDone(){
+export async function markAllTodosDone() {
   const filter = {};
   const updateDoc = { $set: { done: true } };
   const result = await collection.updateMany(filter, updateDoc);
@@ -63,7 +66,6 @@ const result = await collection.insertOne(doc);
 console.log(
    `A document was inserted with the _id: ${result.insertedId}`,
 ); */
-
 
 /* const find_result = await collection.findOne({ _id: ObjectId("63bd1604166c68e8f13d3d67") })
 console.log(find_result) */
