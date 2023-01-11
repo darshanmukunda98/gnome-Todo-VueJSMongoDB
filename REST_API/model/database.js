@@ -39,13 +39,13 @@ export async function addTodoFields(id, todofields) {
   return result.modifiedCount;
 }
 export async function deleteTodo(id) {
-  const filter = { title: id };
+  const filter = { _id: ObjectId(id) };
   const updateDoc = {
     $set: { deleted: true }
   };
-  const result = await collection.findOneAndUpdate(filter, updateDoc);
-  console.log(filter);
+  const result = await collection.updateOne(filter, updateDoc);
   console.log(result);
+  return result.modifiedCount;
 }
 export async function markAllTodosDone() {
   const filter = {};
