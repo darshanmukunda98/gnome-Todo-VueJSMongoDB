@@ -21,9 +21,8 @@ app.get('/', async (req, res) => {
 
 app.post('/insert', async (req, res) => {
   try {
-    console.log(req.body);
     const result = await insertOneTodo(req.body);
-    res.json({ body: req.body, insertion: result });
+    res.json({ body: req.body, insert: result });
   } catch (err) {
     console.log(err);
   }
@@ -31,18 +30,18 @@ app.post('/insert', async (req, res) => {
 
 app.put('/update/:id', async (req, res) => {
   const result = await addTodoFields(req.params.id, req.body);
-  res.json({ body: req.body, result: result });
+  res.json({ body: req.body, update: result });
 });
 
 app.delete('/delete/:id', async (req, res) => {
   const result = await deleteTodo(req.params.id);
-  console.log(result)
-  res.json({result: result });
+  console.log(result);
+  res.json({ delete: result });
 });
-app.put('/done',async(req,res)=>{
-    const result = await markAllTodosDone()
-    res.json({result:result.modifiedCount})
-})
+app.put('/done', async (req, res) => {
+  const result = await markAllTodosDone();
+  res.json({ done: result.modifiedCount });
+});
 
 app.listen(3000, () => {
   console.log('App listening on port 3000');
