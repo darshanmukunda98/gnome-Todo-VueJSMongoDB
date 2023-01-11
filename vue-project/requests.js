@@ -26,6 +26,14 @@ async function updateTodo(id, body) {
   ).json();
   console.log(response);
 }
+async function deleteTodo(id){
+    let response = await (
+        await fetch('http://localhost:3000/delete/'+id, {
+          method: 'DELETE',
+        })
+      ).json();
+      console.log(response);
+}
 //fetchAllTodos();
 /* insertTodo({
   title: 'Todo 11',
@@ -35,11 +43,12 @@ async function updateTodo(id, body) {
   priority: 'none',
   deleted: false
 }); */
-updateTodo('63be93baf728db150ff01855', {
+/* updateTodo('63be93baf728db150ff01855', {
   title: 'Todo 11',
   done: true,
   notes: '',
   date: '',
   priority: 'none',
   deleted: false
-});
+}); */
+deleteTodo('63be9414f728db150ff01857')
