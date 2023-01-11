@@ -34,14 +34,7 @@ export async function addTodoFields(id, todofields) {
   };
   const result = await collection.findOneAndUpdate(filter, updateDoc);
   console.log(result);
-}
-export async function deleteTodo(id){
-  const filter = { _id: id };
-  const updateDoc = {
-    $set: {deleted: true}
-  };
-  const result = await collection.findOneAndUpdate(filter, updateDoc);
-  console.log(result);
+  return result
 }
 export async function deleteTodo(id){
   const filter = { _id: id };
