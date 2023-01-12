@@ -1,5 +1,5 @@
 import { MongoClient, ObjectId } from 'mongodb';
-import { rename_IdToid } from '../utility.js';
+import { isEmptyObject, rename_IdToid } from '../utility.js';
 const url = 'mongodb://127.0.0.1:27017/';
 const client = new MongoClient(url);
 const dbName = 'todos';
@@ -11,9 +11,11 @@ export async function getAllTodos() {
   return rename_IdToid(todos);
 }
 export async function insertOneTodo(todo) {
-  const result = await collection.insertOne(todo);
-  console.log(`A document was inserted with the _id: ${result.insertedId}`);
-  return result.acknowledged;
+  let result = {};
+  if (isEmptyObject(todo)) return result;
+  result = await collection.insertOne(todo);
+  result.message = 'Insertion Successful!!';
+  return result;
 }
 export async function addTodoFields(id, todofields) {
   const filter = {

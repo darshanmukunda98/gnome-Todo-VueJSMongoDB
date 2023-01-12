@@ -20,12 +20,10 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/insert', async (req, res) => {
-  try {
-    const result = await insertOneTodo(req.body);
-    res.json({ body: req.body, insert: result });
-  } catch (err) {
-    console.log(err);
-  }
+  const result = await insertOneTodo(req.body);
+  console.log(result.message);
+  if (result.message) res.status(200).json({ body: req.body, message: result });
+  else res.status(204).json();
 });
 
 app.put('/update/:id', async (req, res) => {
