@@ -7,5 +7,5 @@ export function rename_IdToid(arrayOfObj) {
 }
 
 export function isEmptyObject(obj){
-    return JSON.stringify(obj) === '{}'
+    return JSON.stringify(obj) === '{}'||JSON.stringify(obj) ==='[]'
 }

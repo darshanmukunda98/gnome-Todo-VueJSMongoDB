@@ -6,24 +6,31 @@ import {
   insertOneTodo,
   markAllTodosDone
 } from './model/database.js';
+import { isEmptyObject } from './utility.js';
 
 const app = express();
 app.use(express.json());
 
 app.get('/', async (req, res) => {
-  try {
-    const todos = await getAllTodos();
-    res.send(todos);
-  } catch (err) {
-    console.log(err);
-  }
+  const todos = await getAllTodos();
+  if (isEmptyObject(todos)) res;
+  res.send(todos);
 });
 
 app.post('/insert', async (req, res) => {
   const result = await insertOneTodo(req.body);
   console.log(result.message);
-  if (result.message) res.status(200).json({ body: req.body, message: result });
-  else res.status(204).json();
+  if (result.message) {
+    res.status(200).json({ 
+      body: req.body, 
+      message: result 
+    });
+  } else {
+    result.message = 'No Body Sent'
+    res.status(400).json({ 
+      body: req.body, 
+      message: result });
+  }
 });
 
 app.put('/update/:id', async (req, res) => {

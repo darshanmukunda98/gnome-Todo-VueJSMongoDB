@@ -12,6 +12,7 @@ export async function getAllTodos() {
 }
 export async function insertOneTodo(todo) {
   let result = {};
+  console.log(todo)
   if (isEmptyObject(todo)) return result;
   result = await collection.insertOne(todo);
   result.message = 'Insertion Successful!!';
