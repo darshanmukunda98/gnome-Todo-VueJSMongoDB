@@ -13,7 +13,7 @@ app.use(express.json());
 app.get('/', async (req, res) => {
   try {
     const todos = await getAllTodos();
-    res.json(todos);
+    res.send(todos);
   } catch (err) {
     console.log(err);
   }

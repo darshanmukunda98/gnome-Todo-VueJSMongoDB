@@ -1,27 +1,14 @@
 import { MongoClient, ObjectId } from 'mongodb';
-
+import { rename_IdToid } from '../utility.js';
 const url = 'mongodb://127.0.0.1:27017/';
 const client = new MongoClient(url);
 const dbName = 'todos';
 const db = client.db(dbName);
 const collection = db.collection('todos');
 
-export async function connDB() {
-  try {
-    await client.connect();
-    console.log('Connected successfully to server');
-  } catch (error) {
-    console.log(error);
-  }
-  return 'done.';
-}
 export async function getAllTodos() {
-  const todos = [];
-  const find_result = collection.find({});
-  await find_result.forEach((element) => {
-    todos.push(element);
-  });
-  return todos;
+  const todos = await collection.find({}).toArray();
+  return rename_IdToid(todos);
 }
 export async function insertOneTodo(todo) {
   const result = await collection.insertOne(todo);
@@ -51,7 +38,7 @@ export async function markAllTodosDone() {
   const filter = {};
   const updateDoc = { $set: { done: true } };
   const result = await collection.updateMany(filter, updateDoc);
-  return result
+  return result;
 }
 
 /*   const doc = {

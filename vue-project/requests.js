@@ -26,21 +26,21 @@ async function updateTodo(id, body) {
   ).json();
   console.log(response);
 }
-async function deleteTodo(id){
-    let response = await (
-        await fetch('http://localhost:3000/delete/'+id, {
-          method: 'DELETE',
-        })
-      ).json();
-      console.log(response);
+async function deleteTodo(id) {
+  let response = await (
+    await fetch('http://localhost:3000/delete/' + id, {
+      method: 'DELETE'
+    })
+  ).json();
+  console.log(response);
 }
-async function markAllDone(){
-    let response = await (
-        await fetch('http://localhost:3000/done/', {
-          method: 'PUT',
-        })
-      ).json();
-      console.log(response);
+async function markAllDone() {
+  let response = await (
+    await fetch('http://localhost:3000/done/', {
+      method: 'PUT'
+    })
+  ).json();
+  console.log(response);
 }
 //fetchAllTodos();
 /* insertTodo({
@@ -60,5 +60,4 @@ async function markAllDone(){
   deleted: false
 }); */
 /* deleteTodo('63be9414f728db150ff01857') */
-markAllDone()
-
+markAllDone();

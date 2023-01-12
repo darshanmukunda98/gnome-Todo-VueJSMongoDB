@@ -5,10 +5,10 @@ let todos = ref(loadData() || []);
 let reset = '';
 let filter = ref();
 filter.value = (todo) => {
-  console.log(todo)
+  console.log(todo);
   return !todo.deleted;
-}
-console.log(filter.value)
+};
+console.log(filter.value);
 
 const isDone = (todo) => todo.done === true;
 let checkAllDone = todos.value.length != 0 && todos.value.every(isDone);
@@ -35,7 +35,6 @@ function createTodo(title) {
 }
 
 function getTodo(event) {
-  
   if (event.target.value === '') return;
   const target = event.target;
   let title = target.value;
@@ -72,7 +71,7 @@ function filterActive() {
 function filterCompleted() {
   filter.value = (todo) => {
     return todo.done && !todo.deleted;
-  }; 
+  };
 }
 </script>
 <template>
@@ -90,7 +89,6 @@ function filterCompleted() {
         />
       </span>
       <div v-for="(item, index) in todos" :key="item.id">
-        
         <!-- <details
           v-if="!item.deleted && filter(item)"
           
