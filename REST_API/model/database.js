@@ -16,8 +16,8 @@ export async function insertOneTodo(todo) {
   let result = {};
   if (isEmptyObject(todo)) return result;
   result = await collection.insertOne(todo);
-  result.message = 'Insertion Successful!!';
-  return result;
+  result.message = 'Insertion Successful!!'; // add this in controller
+  return result; //return inserted todo with _id
 }
 
 export async function addTodoFields(id, todofields) {

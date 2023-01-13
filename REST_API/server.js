@@ -16,7 +16,6 @@ app.use(cors());
 
 app.get('/', async (req, res) => {
   const todos = await getAllTodos();
-  if (isEmptyObject(todos)) res;
   res.send(todos);
 });
 
@@ -30,13 +29,13 @@ app.post('/insert', async (req, res) => {
   } else {
     result.message = 'No Body Sent';
     res.status(400).json({
-      body: req.body,
+      body: req.body, 
       message: result
     });
   }
 });
 
-app.put('/updates', async (req, res) => {
+app.put('/updates', async (req, res) => { //remove this route and function
   const result = await updateAllTodos(req.body);
   if (result.message) {
     res.status(200).json({
