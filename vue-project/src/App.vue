@@ -23,7 +23,7 @@ async function loadData() {
 
 async function saveData(data) {
   // localStorage.setItem('todos', JSON.stringify(data)); 
-  await updates(data)
+  await updatesAllTodos(data)
   todos.value = await fetchAllTodos()
 }
 
@@ -266,11 +266,7 @@ function filterCompleted() {
   background-color: rgb(255, 100, 100);
   margin: auto;
 }
-.todo--item--checkbox {
-}
-.todo--item--checkbox:checked {
-  content: '✓';
-}
+
 .todo--item--title {
   width: 100%;
   border-style: none;

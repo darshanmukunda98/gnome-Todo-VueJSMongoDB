@@ -6,7 +6,7 @@ import {
   getAllTodos,
   insertOneTodo,
   markAllTodosDone,
-  updateTodo
+  updateAllTodos
 } from './model/database.js';
 import { isEmptyObject } from './utility.js';
 
