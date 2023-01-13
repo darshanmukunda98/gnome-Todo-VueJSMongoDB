@@ -1,5 +1,5 @@
 import { MongoClient, ObjectId } from 'mongodb';
-import { isEmptyObject, rename_IdToid } from '../utility.js';
+import { isEmptyObject, renameidTo_id, rename_IdToid } from '../utility.js';
 const url = 'mongodb://127.0.0.1:27017/';
 const client = new MongoClient(url);
 const dbName = 'todos';
@@ -29,17 +29,24 @@ export async function addTodoFields(id, todofields) {
 }
 export async function updateTodo(todos) {
   let result = {};
-
-  for await(const onetodo of todos){
-    let filter = { _id: ObjectId(onetodo.id) };
-    delete onetodo.id
-    let updateDoc = {
-      $set: onetodo
-    };
-    console.log(onetodo);
-    result = await collection.updateOne(filter, updateDoc);
-    console.log(result);
+  try{
+    
+    console.log(todos)
+    for await(const onetodo of todos){
+      let filter = { _id: ObjectId(onetodo.id) };
+      delete onetodo.id
+      let updateDoc = {
+        $set: onetodo
+      };
+      let options = { upsert: true };
+      console.log(onetodo);
+      result = await collection.updateOne(filter, updateDoc, options);
+      console.log(result);
+    }
+  }catch(err){
+    console.log(err)
   }
+  
 
   /* todo.forEach(async (onetodo) => {
     let i = 0;

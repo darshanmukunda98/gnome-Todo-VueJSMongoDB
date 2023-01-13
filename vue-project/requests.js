@@ -18,6 +18,7 @@ export async function insertTodo(todo) {
   return response
 }
 export async function updateTodo(id, body) {
+  
   let response = await (
     await fetch('http://localhost:3000/update/' + id, {
       method: 'PUT',

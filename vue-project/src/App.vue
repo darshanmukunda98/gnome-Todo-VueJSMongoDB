@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { fetchAllTodos, updates } from '../requests.js';
+import { fetchAllTodos, insertTodo, updates } from '../requests.js';
 
 // let todos = ref(loadData() || []);
 let todos = ref([]);
@@ -25,6 +25,7 @@ async function loadData() {
   return await fetchAllTodos()
 }
 
+
 async function saveData(data) {
   // console.log(data);
   // localStorage.setItem('todos', JSON.stringify(data));
@@ -33,7 +34,6 @@ async function saveData(data) {
 
 function createTodo(title) {
   return {
-    id: Date.now(),
     title: title,
     done: false,
     notes: '',
@@ -49,6 +49,7 @@ function getTodo(event) {
   let title = target.value;
   todos.value.push(createTodo(title));
   saveData(todos.value);
+  
 }
 
 function saveTodoDetails(e) {
