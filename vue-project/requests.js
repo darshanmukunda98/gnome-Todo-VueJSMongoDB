@@ -28,7 +28,7 @@ export async function updateTodo(id, body) {
   ).json();
   return response;
 }
-export async function updates(body) {
+export async function updatesAllTodos(body) {
   console.log(body);
   let response = await (
     await fetch('http://localhost:3000/updates/', {

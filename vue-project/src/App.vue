@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { fetchAllTodos, insertTodo, updates } from '../requests.js';
+import { fetchAllTodos, updatesAllTodos } from '../requests.js';
 
 // let todos = ref(loadData() || []);
 let todos = ref([]);
