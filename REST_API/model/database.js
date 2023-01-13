@@ -41,7 +41,8 @@ export async function updateTodo(todos) {
       let options = { upsert: true };
       console.log(onetodo);
       result = await collection.updateOne(filter, updateDoc, options);
-      console.log(result);
+      console.log("RESULT "+JSON.stringify(result));
+      //return result
     }
   }catch(err){
     console.log(err)
@@ -67,6 +68,7 @@ export async function updateTodo(todos) {
   // const result = await collection.updateMany(filter, updateDoc);
   //return result.modifiedCount;
   result.message = 'SUCCESS!!';
+
   return result;
 }
 export async function deleteTodo(id) {

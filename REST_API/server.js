@@ -36,6 +36,8 @@ app.post('/insert', async (req, res) => {
 });
 app.put('/updates',async (req,res)=>{
   const result =  await updateTodo(req.body);
+  //console.log(JSON.stringify(result.upsertedId))
+  //res.json(JSON.stringify(result.upsertedId))
   if (result.message) {
     res.status(200).json({ 
       body: req.body, 

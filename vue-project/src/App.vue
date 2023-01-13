@@ -29,7 +29,11 @@ async function loadData() {
 async function saveData(data) {
   // console.log(data);
   // localStorage.setItem('todos', JSON.stringify(data));
-  updates(data)
+  
+  await updates(data)
+  todos.value = await fetchAllTodos()
+  console.log("SAVE DATA")
+  console.log(todos.value)
 }
 
 function createTodo(title) {
@@ -43,12 +47,12 @@ function createTodo(title) {
   };
 }
 
-function getTodo(event) {
+function addTodo(event) {
   if (event.target.value === '') return;
   const target = event.target;
   let title = target.value;
   todos.value.push(createTodo(title));
-  saveData(todos.value);
+   saveData(todos.value)
   
 }
 
@@ -93,7 +97,7 @@ function filterCompleted() {
       <span class="todo--input">
         <input type="checkbox" @change="setAllDone" v-model="checkAllDone" />
         <input
-          @keydown.enter="getTodo"
+          @keydown.enter="addTodo"
           :value="reset"
           class="todo--title--input"
           autofocus
