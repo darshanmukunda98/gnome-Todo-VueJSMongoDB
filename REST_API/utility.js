@@ -5,14 +5,7 @@ export function rename_IdToid(arrayOfObj) {
   }));
   return newArrayOfObj;
 }
-export function renameidTo_id(arrayOfObj) {
-  const newArrayOfObj = arrayOfObj.map(({ id: _id, ...rest }) => ({
-    _id,
-    ...rest
-  }));
-  return newArrayOfObj;
-}
 
-export function isEmptyObject(obj){
-    return JSON.stringify(obj) === '{}'||JSON.stringify(obj) ==='[]'
+export function isEmptyObject(obj) {
+  return JSON.stringify(obj) === '{}' || JSON.stringify(obj) === '[]';
 }

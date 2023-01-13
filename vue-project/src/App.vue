@@ -10,30 +10,21 @@ let todos = ref([]);
 let reset = '';
 let filter = ref();
 filter.value = (todo) => {
-  //console.log(todo);
   return !todo.deleted;
 };
-//console.log(filter.value);
 
 const isDone = (todo) => todo.done === true;
-let checkAllDone = todos.value.length != 0 && todos.value.every(isDone);
-//console.log(checkAllDone);
+let checkAllDone = todos.value.length != 0 && todos.value.every(isDone)
 
 async function loadData() {
-  //console.log(await fetchAllTodos())
   //return JSON.parse(localStorage.getItem('todos')); //getAllTodos
   return await fetchAllTodos()
 }
 
-
 async function saveData(data) {
-  // console.log(data);
-  // localStorage.setItem('todos', JSON.stringify(data));
-  
+  // localStorage.setItem('todos', JSON.stringify(data)); 
   await updates(data)
   todos.value = await fetchAllTodos()
-  console.log("SAVE DATA")
-  console.log(todos.value)
 }
 
 function createTodo(title) {
@@ -71,23 +62,25 @@ function setAllDone(e) {
   });
   saveData(todos.value);
 }
+
 function filterAll() {
   filter.value = (todo) => {
     return !todo.deleted;
   };
   return filter.value;
 }
+
 function filterActive() {
   filter.value = (todo) => {
     return !todo.done && !todo.deleted;
   };
 }
+
 function filterCompleted() {
   filter.value = (todo) => {
     return todo.done && !todo.deleted;
   };
 }
-
 
 </script>
 <template>
@@ -105,13 +98,6 @@ function filterCompleted() {
         />
       </span>
       <div v-for="(item, index) in todos" :key="item.id">
-        <!-- <details
-          v-if="!item.deleted && filter(item)"
-          
-          class="todo--item"
-          :id="item.id"
-          @change="saveTodoDetails"
-        > -->
         <details
           v-if="filter(item)"
           class="todo--item"

@@ -12,7 +12,7 @@ import { isEmptyObject } from './utility.js';
 
 const app = express();
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 app.get('/', async (req, res) => {
   const todos = await getAllTodos();
@@ -23,33 +23,34 @@ app.get('/', async (req, res) => {
 app.post('/insert', async (req, res) => {
   const result = await insertOneTodo(req.body);
   if (result.message) {
-    res.status(200).json({ 
-      body: req.body, 
-      message: result 
+    res.status(200).json({
+      body: req.body,
+      message: result
     });
   } else {
-    result.message = 'No Body Sent'
-    res.status(400).json({ 
-      body: req.body, 
-      message: result });
+    result.message = 'No Body Sent';
+    res.status(400).json({
+      body: req.body,
+      message: result
+    });
   }
 });
-app.put('/updates',async (req,res)=>{
-  const result =  await updateTodo(req.body);
-  //console.log(JSON.stringify(result.upsertedId))
-  //res.json(JSON.stringify(result.upsertedId))
+
+app.put('/updates', async (req, res) => {
+  const result = await updateTodo(req.body);
   if (result.message) {
-    res.status(200).json({ 
-      body: req.body, 
-      message: result 
+    res.status(200).json({
+      body: req.body,
+      message: result
     });
   } else {
-    result.message = 'No Body Sent'
-    res.status(400).json({ 
-      body: req.body, 
-      message: result });
+    result.message = 'No Body Sent';
+    res.status(400).json({
+      body: req.body,
+      message: result
+    });
   }
-})
+});
 
 app.put('/update/:id', async (req, res) => {
   const result = await addTodoFields(req.params.id, req.body);
@@ -61,6 +62,7 @@ app.delete('/delete/:id', async (req, res) => {
   console.log(result);
   res.json({ delete: result });
 });
+
 app.put('/done', async (req, res) => {
   const result = await markAllTodosDone();
   res.json({ done: result.modifiedCount });
