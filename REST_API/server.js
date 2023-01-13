@@ -37,7 +37,7 @@ app.post('/insert', async (req, res) => {
 });
 
 app.put('/updates', async (req, res) => {
-  const result = await updateTodo(req.body);
+  const result = await updateAllTodos(req.body);
   if (result.message) {
     res.status(200).json({
       body: req.body,

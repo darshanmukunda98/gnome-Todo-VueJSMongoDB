@@ -31,7 +31,7 @@ export async function addTodoFields(id, todofields) {
   return result.modifiedCount;
 }
 
-export async function updateTodo(todos) {
+export async function updateAllTodos(todos) {
   let result = {};
   try {
     for await (const onetodo of todos) {
