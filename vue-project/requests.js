@@ -1,8 +1,10 @@
-async function fetchAllTodos() {
+export async function fetchAllTodos() {
   let response = await (await fetch('http://localhost:3000/')).json();
-  console.log(response);
+  //console.log(response)
+  return response
+  
 }
-async function insertTodo(todo) {
+export async function insertTodo(todo) {
   let response = await (
     await fetch('http://localhost:3000/insert', {
       method: 'POST',
@@ -13,8 +15,9 @@ async function insertTodo(todo) {
     })
   ).json();
   console.log(response);
+  return response
 }
-async function updateTodo(id, body) {
+export async function updateTodo(id, body) {
   let response = await (
     await fetch('http://localhost:3000/update/' + id, {
       method: 'PUT',
@@ -24,23 +27,40 @@ async function updateTodo(id, body) {
       body: JSON.stringify(body)
     })
   ).json();
-  console.log(response);
+  //console.log(response);
+  return response
 }
-async function deleteTodo(id) {
+export async function updates(body){
+  console.log(body)
+  let response = await (
+    await fetch('http://localhost:3000/updates/', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(body)
+    })
+  ).json();
+  //console.log(response);
+  return response
+}
+export async function deleteTodo(id) {
   let response = await (
     await fetch('http://localhost:3000/delete/' + id, {
       method: 'DELETE'
     })
   ).json();
   console.log(response);
+  return response
 }
-async function markAllDone() {
+export async function markAllDone() {
   let response = await (
     await fetch('http://localhost:3000/done/', {
       method: 'PUT'
     })
   ).json();
   console.log(response);
+  return response
 }
 //fetchAllTodos();
 /* insertTodo({
@@ -60,4 +80,4 @@ async function markAllDone() {
   deleted: false
 }); */
 /* deleteTodo('63be9414f728db150ff01857') */
-markAllDone();
+//markAllDone();

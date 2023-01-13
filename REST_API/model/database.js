@@ -12,7 +12,6 @@ export async function getAllTodos() {
 }
 export async function insertOneTodo(todo) {
   let result = {};
-  console.log(todo)
   if (isEmptyObject(todo)) return result;
   result = await collection.insertOne(todo);
   result.message = 'Insertion Successful!!';
@@ -27,6 +26,41 @@ export async function addTodoFields(id, todofields) {
   };
   const result = await collection.updateOne(filter, updateDoc);
   return result.modifiedCount;
+}
+export async function updateTodo(todos) {
+  let result = {};
+
+  for await(const onetodo of todos){
+    let filter = { _id: ObjectId(onetodo.id) };
+    delete onetodo.id
+    let updateDoc = {
+      $set: onetodo
+    };
+    console.log(onetodo);
+    result = await collection.updateOne(filter, updateDoc);
+    console.log(result);
+  }
+
+  /* todo.forEach(async (onetodo) => {
+    let i = 0;
+    const filter = { _id: ObjectId(onetodo.id) };
+    const updateDoc = {
+      $set: onetodo
+    };
+    console.log('COUNT ' + i++);
+    console.log(onetodo);
+    result = await collection.updateOne(filter, updateDoc);
+    console.log(result);
+  });
+ */
+
+  // const updateDoc = {
+  //   $set: onetodo
+  // }
+  // const result = await collection.updateMany(filter, updateDoc);
+  //return result.modifiedCount;
+  result.message = 'SUCCESS!!';
+  return result;
 }
 export async function deleteTodo(id) {
   const filter = { _id: ObjectId(id) };

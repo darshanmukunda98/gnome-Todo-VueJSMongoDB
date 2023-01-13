@@ -1,25 +1,34 @@
 <script setup>
 import { ref } from 'vue';
+import { fetchAllTodos, updates } from '../requests.js';
 
-let todos = ref(loadData() || []);
+// let todos = ref(loadData() || []);
+let todos = ref([]);
+(async()=>{
+  todos.value= await loadData()
+})()
 let reset = '';
 let filter = ref();
 filter.value = (todo) => {
-  console.log(todo);
+  //console.log(todo);
   return !todo.deleted;
 };
-console.log(filter.value);
+//console.log(filter.value);
 
 const isDone = (todo) => todo.done === true;
 let checkAllDone = todos.value.length != 0 && todos.value.every(isDone);
-console.log(checkAllDone);
+//console.log(checkAllDone);
 
-function loadData() {
-  return JSON.parse(localStorage.getItem('todos'));
+async function loadData() {
+  //console.log(await fetchAllTodos())
+  //return JSON.parse(localStorage.getItem('todos')); //getAllTodos
+  return await fetchAllTodos()
 }
 
-function saveData(data) {
-  localStorage.setItem('todos', JSON.stringify(data));
+async function saveData(data) {
+  // console.log(data);
+  // localStorage.setItem('todos', JSON.stringify(data));
+  updates(data)
 }
 
 function createTodo(title) {
@@ -73,6 +82,8 @@ function filterCompleted() {
     return todo.done && !todo.deleted;
   };
 }
+
+
 </script>
 <template>
   <div class="app">
