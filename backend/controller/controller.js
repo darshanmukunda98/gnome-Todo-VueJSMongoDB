@@ -19,7 +19,7 @@ export const getAllTodosController = async (req, res) => {
 export const insertTodoController = async (req, res) => {
   try {
     const result = await insertOneTodo(req.body);
-    res.json(result)
+    res.json(rename_idToid(result))
   } catch (err) {
     console.log(err);
     res.status(400).json();
