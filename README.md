@@ -7,7 +7,7 @@ Date 13/01
 5. filter all deleted todos before fetching
 6. when updating only the updatedtodos should be sent PUT
 
-7. Refactor REST_API to MVC pattern
+
 8. Add exception handling try catch blocks
 9. read on Mongoose Virtual attribute
 10. Dont return req.body in response
@@ -17,4 +17,6 @@ Date 13/01
 
 # Completed
 
+7. Refactor REST_API to MVC pattern
 12. use dotenv for storing URLs and ports
+

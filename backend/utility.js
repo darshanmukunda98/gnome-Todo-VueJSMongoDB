@@ -1,4 +1,4 @@
-export function rename_IdToid(arrayOfObj) {
+export function rename_idToid(arrayOfObj) {
   const newArrayOfObj = arrayOfObj.map(({ _id: id, ...rest }) => ({
     id,
     ...rest
