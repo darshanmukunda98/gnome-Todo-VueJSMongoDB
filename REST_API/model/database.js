@@ -1,11 +1,12 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import { isEmptyObject, rename_IdToid } from '../utility.js';
+import dotenv from 'dotenv'
 
-const url = 'mongodb://127.0.0.1:27017/';
-const client = new MongoClient(url);
-const dbName = 'todos';
-const db = client.db(dbName);
-const collection = db.collection('todos');
+dotenv.config()
+
+const client = new MongoClient(process.env.DB_URL);
+const db = client.db(process.env.DB_NAME);
+const collection = db.collection(process.env.DB_COLLECTION);
 
 export async function getAllTodos() {
   const todos = await collection.find({}).toArray();
@@ -31,7 +32,7 @@ export async function addTodoFields(id, todofields) {
   return result.modifiedCount;
 }
 
-export async function updateAllTodos(todos) {
+/* export async function updateAllTodos(todos) {
   let result = {};
   try {
     for await (const onetodo of todos) {
@@ -48,7 +49,7 @@ export async function updateAllTodos(todos) {
   }
   result.message = 'SUCCESS!!';
   return result;
-}
+} */
 
 export async function deleteTodo(id) {
   const filter = { _id: ObjectId(id) };
