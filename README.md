@@ -12,5 +12,9 @@ Date 13/01
 9. read on Mongoose Virtual attribute
 10. Dont return req.body in response
 11. consistent response structures(error codes etc.)
-12. use dotenv for storing URLs and ports
+
 13. improve folder structure
+
+# Completed
+
+12. use dotenv for storing URLs and ports
