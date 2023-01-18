@@ -1,6 +1,6 @@
 export async function fetchAllTodos() {
   let response = await (await fetch('http://localhost:3000/todos')).json();
-  console.log(response);
+  //console.log(response);
   return response;
 }
 export async function insertTodo(todo) {

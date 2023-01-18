@@ -1,12 +1,18 @@
 <script setup>
 import { ref } from 'vue';
-import { fetchAllTodos, insertTodo, updateTodoById,deleteTodoById, markAllDone } from '../requests.js';
+import {
+  fetchAllTodos,
+  insertTodo,
+  updateTodoById,
+  deleteTodoById,
+  markAllDone
+} from '../requests.js';
 
 // let todos = ref(loadData() || []);
 let todos = ref([]);
-(async()=>{
-  todos.value= await loadData()
-})()
+(async () => {
+  todos.value = (await loadData()).filter((todo) => !todo.deleted);;
+})();
 let reset = '';
 let filter = ref();
 filter.value = (todo) => {
@@ -14,11 +20,11 @@ filter.value = (todo) => {
 };
 
 const isDone = (todo) => todo.done === true;
-let checkAllDone = todos.value.length != 0 && todos.value.every(isDone)
+let checkAllDone = todos.value.length != 0 && todos.value.every(isDone);
 
 async function loadData() {
   //return JSON.parse(localStorage.getItem('todos')); //getAllTodos
-  return await fetchAllTodos()
+  return await fetchAllTodos();
 }
 
 // async function saveData(data) {
@@ -41,27 +47,24 @@ function addTodo(event) {
   if (event.target.value === '') return;
   const target = event.target;
   let title = target.value;
-  let todo = createTodo(title)
+  let todo = createTodo(title);
   todos.value.push(todo);
-  insertTodo(todo)
-   //saveData(todos.value)
-
+  insertTodo(todo);
+  //saveData(todos.value)
 }
 
 function saveTodoDetails(e) {
   //console.log(e.target.name)
   //console.log(e.currentTarget.id +"****"+ e.target.value+"****"+e.target.name)
-  let id = e.currentTarget.id
-  let body = Object.fromEntries(new Map([
-  [e.target.name, e.target.value]
-]))
-  updateTodoById(id, body)
+  let id = e.currentTarget.id;
+  let body = Object.fromEntries(new Map([[e.target.name, e.target.value]]));
+  updateTodoById(id, body);
   //saveData(todos.value);
 }
 
 function deleteTodo(e) {
   todos.value.find((todo) => todo.id == e.target.id).deleted = true;
-  deleteTodoById(e.target.id)
+  deleteTodoById(e.target.id);
   //saveData(todos.value);
 }
 
@@ -69,26 +72,26 @@ function setAllDone(e) {
   todos.value.map((todo) => {
     todo.done = checkAllDone;
   });
-  markAllDone()
+  markAllDone();
   //saveData(todos.value);
 }
 
 function filterAll() {
   filter.value = (todo) => {
-    return !todo.deleted;
+    return todo;
   };
   return filter.value;
 }
 
 function filterActive() {
   filter.value = (todo) => {
-    return !todo.done && !todo.deleted;
+    return !todo.done;
   };
 }
 
 function filterCompleted() {
   filter.value = (todo) => {
-    return todo.done && !todo.deleted;
+    return todo.done;
   };
 }
 </script>
