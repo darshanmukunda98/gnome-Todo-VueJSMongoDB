@@ -8,7 +8,6 @@ import {
   markAllDone
 } from '../requests.js';
 
-// let todos = ref(loadData() || []);
 let todos = ref([]);
 (async () => {
   todos.value = (await loadData()).filter((todo) => !todo.deleted);;
@@ -23,14 +22,8 @@ const isDone = (todo) => todo.done === true;
 let checkAllDone = todos.value.length != 0 && todos.value.every(isDone);
 
 async function loadData() {
-  //return JSON.parse(localStorage.getItem('todos')); //getAllTodos
   return await fetchAllTodos();
 }
-
-// async function saveData(data) {
-//   // localStorage.setItem('todos', JSON.stringify(data));
-//   //todos.value = await fetchAllTodos()
-// }
 
 function createTodo(title) {
   return {
@@ -50,22 +43,17 @@ function addTodo(event) {
   let todo = createTodo(title);
   todos.value.push(todo);
   insertTodo(todo);
-  //saveData(todos.value)
 }
 
 function saveTodoDetails(e) {
-  //console.log(e.target.name)
-  //console.log(e.currentTarget.id +"****"+ e.target.value+"****"+e.target.name)
   let id = e.currentTarget.id;
   let body = Object.fromEntries(new Map([[e.target.name, e.target.value]]));
   updateTodoById(id, body);
-  //saveData(todos.value);
 }
 
 function deleteTodo(e) {
   todos.value.find((todo) => todo.id == e.target.id).deleted = true;
   deleteTodoById(e.target.id);
-  //saveData(todos.value);
 }
 
 function setAllDone(e) {
@@ -73,7 +61,6 @@ function setAllDone(e) {
     todo.done = checkAllDone;
   });
   markAllDone();
-  //saveData(todos.value);
 }
 
 function filterAll() {
