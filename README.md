@@ -2,13 +2,15 @@
 Date 13/01
 1. Read on REST API with examples and demo on Monday DEV huddle
 
-4. fetchAllTodos shoud happen only in the beginning 
+
 5. filter all deleted todos before fetching
-6. when updating only the updatedtodos should be sent PUT
+
 
 
 
 # Completed
+6. when updating only the updatedtodos should be sent PUT
+4. fetchAllTodos shoud happen only in the beginning 
 2. Implement all the routes as per REST API conventions
 10. Dont return req.body in response
 8. Add exception handling try catch blocks

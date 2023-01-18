@@ -1,11 +1,11 @@
 export async function fetchAllTodos() {
-  let response = await (await fetch('http://localhost:3000/')).json();
+  let response = await (await fetch('http://localhost:3000/todos')).json();
   console.log(response);
   return response;
 }
 export async function insertTodo(todo) {
   let response = await (
-    await fetch('http://localhost:3000/insert', {
+    await fetch('http://localhost:3000/todos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -16,9 +16,9 @@ export async function insertTodo(todo) {
   console.log(response);
   return response;
 }
-export async function updateTodo(id, body) {
+export async function updateTodoById(id, body) {
   let response = await (
-    await fetch('http://localhost:3000/update/' + id, {
+    await fetch('http://localhost:3000/todos/' + id, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -28,7 +28,7 @@ export async function updateTodo(id, body) {
   ).json();
   return response;
 }
-export async function updatesAllTodos(body) {
+/* export async function updatesAllTodos(body) {
   console.log(body);
   let response = await (
     await fetch('http://localhost:3000/updates/', {
@@ -41,10 +41,10 @@ export async function updatesAllTodos(body) {
   ).json();
   console.log(response);
   return response;
-}
-export async function deleteTodo(id) {
+} */
+export async function deleteTodoById(id) {
   let response = await (
-    await fetch('http://localhost:3000/delete/' + id, {
+    await fetch('http://localhost:3000/todos/' + id, {
       method: 'DELETE'
     })
   ).json();
@@ -52,11 +52,11 @@ export async function deleteTodo(id) {
   return response;
 }
 export async function markAllDone() {
-  let response = await (
-    await fetch('http://localhost:3000/done/', {
+  // let response = await (
+    await fetch('http://localhost:3000/todos/all/check', {
       method: 'PUT'
     })
-  ).json();
-  console.log(response);
-  return response;
+  // ).json();
+  // console.log(await response);
+  //return response;
 }

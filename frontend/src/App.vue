@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { fetchAllTodos, updatesAllTodos } from '../requests.js';
+import { fetchAllTodos, insertTodo, updateTodoById,deleteTodoById, markAllDone } from '../requests.js';
 
 // let todos = ref(loadData() || []);
 let todos = ref([]);
@@ -21,11 +21,10 @@ async function loadData() {
   return await fetchAllTodos()
 }
 
-async function saveData(data) {
-  // localStorage.setItem('todos', JSON.stringify(data)); 
-  await updatesAllTodos(data)
-  todos.value = await fetchAllTodos()
-}
+// async function saveData(data) {
+//   // localStorage.setItem('todos', JSON.stringify(data));
+//   //todos.value = await fetchAllTodos()
+// }
 
 function createTodo(title) {
   return {
@@ -42,25 +41,36 @@ function addTodo(event) {
   if (event.target.value === '') return;
   const target = event.target;
   let title = target.value;
-  todos.value.push(createTodo(title));
-   saveData(todos.value)
-  
+  let todo = createTodo(title)
+  todos.value.push(todo);
+  insertTodo(todo)
+   //saveData(todos.value)
+
 }
 
 function saveTodoDetails(e) {
-  saveData(todos.value);
+  //console.log(e.target.name)
+  //console.log(e.currentTarget.id +"****"+ e.target.value+"****"+e.target.name)
+  let id = e.currentTarget.id
+  let body = Object.fromEntries(new Map([
+  [e.target.name, e.target.value]
+]))
+  updateTodoById(id, body)
+  //saveData(todos.value);
 }
 
 function deleteTodo(e) {
   todos.value.find((todo) => todo.id == e.target.id).deleted = true;
-  saveData(todos.value);
+  deleteTodoById(e.target.id)
+  //saveData(todos.value);
 }
 
 function setAllDone(e) {
   todos.value.map((todo) => {
     todo.done = checkAllDone;
   });
-  saveData(todos.value);
+  markAllDone()
+  //saveData(todos.value);
 }
 
 function filterAll() {
@@ -81,7 +91,6 @@ function filterCompleted() {
     return todo.done && !todo.deleted;
   };
 }
-
 </script>
 <template>
   <div class="app">
@@ -108,7 +117,7 @@ function filterCompleted() {
             <input
               class="todo--item--checkbox"
               type="checkbox"
-              name="checkbox"
+              name="done"
               v-model="item.done"
             />
 
@@ -133,6 +142,7 @@ function filterCompleted() {
               <label class="todo--item--notes--label">Notes</label>
               <textarea
                 class="todo--item--notes"
+                name="notes"
                 style="height: 98px; width: 400px"
                 v-model="item.notes"
               ></textarea>
@@ -142,13 +152,18 @@ function filterCompleted() {
                 <label class="todo--item--date--label">Date</label>
                 <input
                   class="todo--item--date"
+                  name="date"
                   type="date"
                   v-model="item.date"
                 />
               </div>
               <div style="display: flex; flex-direction: column; padding: 10px">
                 <label class="todo--item--priority--label">Priority</label>
-                <select class="todo--item--priority" v-model="item.priority">
+                <select
+                  class="todo--item--priority"
+                  name="priority"
+                  v-model="item.priority"
+                >
                   <option value="none">None</option>
                   <option value="high">High</option>
                   <option value="medium">Medium</option>
