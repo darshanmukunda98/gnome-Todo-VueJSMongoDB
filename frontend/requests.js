@@ -25,6 +25,7 @@ export async function updateTodoById(id, body) {
       body: JSON.stringify(body)
     })
   ).json();
+  console.log(await response)
   return response;
 }
 
