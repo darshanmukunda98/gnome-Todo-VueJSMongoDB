@@ -1,6 +1,9 @@
 # gnome-Todo-VueJSMongoDB
 Date 13/01
 
+Start OS using systemd
+1. sudo rm /tmp/mongodb-27*
+2. sudo service mongod start && mongod
 
 
 
